@@ -1,0 +1,13 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: dc-base
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.200.128:3306/dc_base?characterEncoding=utf-8
+    username: root
+    password: mysql
+  jpa:
+    database: mysql
+    show-sql: true
