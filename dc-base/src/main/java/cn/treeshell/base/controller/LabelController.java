@@ -25,6 +25,7 @@ public class LabelController {
 
     @GetMapping
     public Result findAll() {
+
         return new Result(true, StatusCode.OK, "查询成功", labelService.findAll());
     }
 

@@ -5,7 +5,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>dc-common</module>
-        <module>dc_base</module>
+        <module>dc-base</module>
+        <module>dc-recruit</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
