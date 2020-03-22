@@ -5,59 +5,49 @@ import cn.treeshell.base.service.LabelService;
 import cn.treeshell.common.model.PageResult;
 import cn.treeshell.common.model.Result;
 import cn.treeshell.common.model.StatusCode;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * @Author: panjing
- * @Date: 2020/3/16 22:45
+ * 标签 前端控制器
+ *
+ *  @author panjing
+ * @since 2020-03-22
  */
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("/label")
 public class LabelController {
 
     @Autowired
     private LabelService labelService;
 
+    /**
+     * 查询全部
+     * @return
+     */
     @GetMapping
     public Result findAll() {
 
         return new Result(true, StatusCode.OK, "查询成功", labelService.findAll());
     }
 
-    @GetMapping(value = "/{labelId}")
-    public Result findById(@PathVariable String labelId) {
+    /**
+     * 根据 ID 查询
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/{id}")
+    public Result findById(@PathVariable String id) {
 
-        return new Result(true, StatusCode.OK, "查询成功", labelService.findById(labelId));
-    }
-
-    @PostMapping
-    public Result save(@RequestBody Label label) {
-        labelService.save(label);
-
-        return new Result(true, StatusCode.OK, "添加成功");
-    }
-
-    @PutMapping(value = "/{labelId}")
-    public Result update(@PathVariable String labelId, @RequestBody Label label) {
-        label.setId(labelId);
-        labelService.update(label);
-
-        return new Result(true, StatusCode.OK, "更新成功");
-    }
-
-    @DeleteMapping(value = "/{labelId}")
-    public Result delete(@PathVariable String labelId) {
-        labelService.deleteById(labelId);
-
-        return new Result(true, StatusCode.OK, "删除成功");
+        return new Result(true, StatusCode.OK, "查询成功", labelService.findById(id));
     }
 
     /**
+     * 多条件查询
      * 注意：如果是 JDK1.7 环境，不要将 JSON 转为 map，有安全隐患。
      * @param label
      * @return
@@ -69,11 +59,55 @@ public class LabelController {
         return new Result(true, StatusCode.OK, "查询成功", list);
     }
 
+    /**
+     * 分页 + 多条件查询
+     * @param label
+     * @param page
+     * @param size
+     * @return
+     */
     @PostMapping(value = "/search/{page}/{size}")
-    public Result pageQuery(@RequestBody Label label, @PathVariable int page, @PathVariable int size) {
-        Page<Label> labelPage = labelService.pageQuery(label, page, size);
+    public Result findSearch(@RequestBody Label label, @PathVariable int page, @PathVariable int size) {
+        IPage<Label> labelPage = labelService.findSearch(label, page, size);
 
-        return new Result(true, StatusCode.OK, "查询成功", new PageResult<Label>(labelPage.getTotalElements(), labelPage.getContent()));
+        return new Result(true, StatusCode.OK, "查询成功", new PageResult<Label>(labelPage.getTotal(), labelPage.getRecords()));
     }
 
+    /**
+     * 新增
+     * @param label
+     * @return
+     */
+    @PostMapping
+    public Result add(@RequestBody Label label) {
+        labelService.add(label);
+
+        return new Result(true, StatusCode.OK, "添加成功");
+    }
+
+    /**
+     * 修改
+     * @param id
+     * @param label
+     * @return
+     */
+    @PutMapping(value = "/{id}")
+    public Result modify(@PathVariable String id, @RequestBody Label label) {
+        label.setId(id);
+        labelService.modify(label);
+
+        return new Result(true, StatusCode.OK, "更新成功");
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    @DeleteMapping(value = "/{id}")
+    public Result remove(@PathVariable String id) {
+        labelService.remove(id);
+
+        return new Result(true, StatusCode.OK, "删除成功");
+    }
 }

@@ -11,3 +11,9 @@ spring:
   jpa:
     database: mysql
     show-sql: true
+mybatis-plus:
+  mapper-location:- classpath: mapper/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: assign_id #自3.3.0开始,默认使用雪花算法+UUID
+    banner: false

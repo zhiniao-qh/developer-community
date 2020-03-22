@@ -1,31 +1,53 @@
 package cn.treeshell.base.model;
 
-import lombok.Data;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
 /**
- * @Author: panjing
- * @Date: 2020/3/16 22:49
+ * 标签
+ *
+ * @author panjing
+ * @since 2020-03-22
  */
 @Data
-@Entity
-@Table(name = "label")
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
 public class Label implements Serializable {
 
-    @Id
+    private static final long serialVersionUID=1L;
+
+    /**
+     * 标签ID
+     */
     private String id;
-    // 标签名称
+
+    /**
+     * 标签名称
+     */
     private String labelname;
-    // 状态
+
+    /**
+     * 状态
+     */
     private String state;
-    // 使用数量
+
+    /**
+     * 使用数量
+     */
     private Long count;
-    // 关注数
-    private Long fans;
-    // 是否推荐
+
+    /**
+     * 是否推荐
+     */
     private String recommend;
+
+    /**
+     * 粉丝数
+     */
+    private Long fans;
+
+
 }

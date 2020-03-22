@@ -18,6 +18,7 @@ public class BaseExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public Result exception(Exception e) {
         log.error(e.getMessage());
+
         return new Result(false, StatusCode.ERROR, e.getMessage());
     }
 }
