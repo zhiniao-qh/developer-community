@@ -3,4 +3,5 @@
 
 ## 【1】技术架构
 后端：SpringCloud、MyBatis Plus、MySQL、Redis、RabbitMQ
+
 前端：Vue.js、Element UI

@@ -1,4 +1,5 @@
 package cn.treeshell.gathering.controller;
+
 import cn.treeshell.common.model.Result;
 import cn.treeshell.common.model.StatusCode;
 import lombok.extern.slf4j.Slf4j;
