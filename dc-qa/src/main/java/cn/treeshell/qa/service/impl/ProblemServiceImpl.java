@@ -3,6 +3,9 @@ package cn.treeshell.qa.service.impl;
 import cn.treeshell.qa.mapper.ProblemMapper;
 import cn.treeshell.qa.model.Problem;
 import cn.treeshell.qa.service.ProblemService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -54,6 +57,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-qa:problems:hotlist:", key = "#labelid", expire = 1200)
     public IPage<Problem> hotlist(String labelid, int page, int size) {
 
         return this.baseMapper.hotlist(labelid, new Page<>(page, size));
@@ -67,6 +71,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-qa:problems:waitlist:", key = "#labelid", expire = 3600)
     public IPage<Problem> waitlist(String labelid, int page, int size) {
 
         return this.baseMapper.waitlist(labelid, new Page<>(page, size));
@@ -90,6 +95,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-qa:problems:", expire = 3600)
     public List<Problem> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -101,6 +107,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-qa:problem:", key = "#id", expire = 3600)
     public Problem findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -121,6 +128,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @param problem
      */
     @Override
+    @CacheUpdate(name = "dc-qa:problem:", key = "#problem.id", value = "#problem")
     public void modify(Problem problem) {
         this.baseMapper.updateById(problem);
     }
@@ -130,6 +138,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-qa:problem:", key = "#id")
     public void remove(String id) {
         this.baseMapper.deleteById(id);
     }

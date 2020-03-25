@@ -27,6 +27,11 @@
             <version>${flyway.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.alicp.jetcache</groupId>
+            <artifactId>jetcache-starter-redis</artifactId>
+            <version>${jetcache.version}</version>
+        </dependency>
+        <dependency>
             <groupId>cn.treeshell</groupId>
             <artifactId>dc-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>

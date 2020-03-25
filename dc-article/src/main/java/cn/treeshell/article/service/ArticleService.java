@@ -14,9 +14,9 @@ import java.util.List;
  */
 public interface ArticleService extends IService<Article> {
 
-    void modifyState(String articleId);
+    void modifyState(String id);
 
-    void addThumbup(String articleId);
+    void addThumbup(String id);
 
     List<Article> findAll();
 

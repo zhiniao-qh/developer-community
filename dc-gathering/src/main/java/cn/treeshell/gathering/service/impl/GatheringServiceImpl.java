@@ -3,6 +3,9 @@ package cn.treeshell.gathering.service.impl;
 import cn.treeshell.gathering.mapper.GatheringMapper;
 import cn.treeshell.gathering.model.Gathering;
 import cn.treeshell.gathering.service.GatheringService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +30,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
      * @return
      */
     @Override
+    @Cached(name = "dc-gathering:gatherings:", expire = 3600)
     public List<Gathering> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -38,6 +42,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
      * @return
      */
     @Override
+    @Cached(name = "dc-gathering:gathering:", key = "#id", expire = 3600)
     public Gathering findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -81,6 +86,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
      * @param gathering
      */
     @Override
+    @CacheUpdate(name = "dc-gathering:gathering:", key = "#gathering.id", value = "#gathering")
     public void modify(Gathering gathering) {
         this.getBaseMapper().updateById(gathering);
     }
@@ -90,6 +96,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-gathering:gathering:", key = "#id")
     public void delete(String id) {
         this.getBaseMapper().deleteById(id);
     }

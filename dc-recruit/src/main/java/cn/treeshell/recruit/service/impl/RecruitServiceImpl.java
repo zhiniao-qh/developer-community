@@ -3,6 +3,9 @@ package cn.treeshell.recruit.service.impl;
 import cn.treeshell.recruit.model.Recruit;
 import cn.treeshell.recruit.mapper.RecruitMapper;
 import cn.treeshell.recruit.service.RecruitService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +30,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-recruit:recruits:recommend", expire = 3600)
     public List<Recruit> recommend() {
 
         return this.getBaseMapper().selectByState("2");
@@ -47,6 +51,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-recruit:recruits:", expire = 3600)
     public List<Recruit> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -58,6 +63,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-recruit:recruit:", key = "#id", expire = 3600)
     public Recruit findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -101,6 +107,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @param recruit
      */
     @Override
+    @CacheUpdate(name = "dc-recruit:recruit:", key = "#recruit.id", value ="#recruit")
     public void modify(Recruit recruit) {
         this.getBaseMapper().updateById(recruit);
     }
@@ -110,6 +117,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-recruit:recruit:", key = "#id")
     public void remove(String id) {
         this.getBaseMapper().deleteById(id);
     }

@@ -3,6 +3,9 @@ package cn.treeshell.article.service.impl;
 import cn.treeshell.article.model.Channel;
 import cn.treeshell.article.mapper.ChannelMapper;
 import cn.treeshell.article.service.ChannelService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +30,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-article:channels:", expire = 3600)
     public List<Channel> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -38,6 +42,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-article:channel:", key = "#id", expire = 3600)
     public Channel findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -81,6 +86,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
      * @param channel
      */
     @Override
+    @CacheUpdate(name = "dc-article:channel:", key = "#channel.id", value = "#channel")
     public void modify(Channel channel) {
         this.getBaseMapper().updateById(channel);
     }
@@ -90,6 +96,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-article:channel:", key = "#id")
     public void remove(String id) {
         this.getBaseMapper().deleteById(id);
     }

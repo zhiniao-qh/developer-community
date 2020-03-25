@@ -3,6 +3,9 @@ package cn.treeshell.qa.service.impl;
 import cn.treeshell.qa.mapper.ReplyMapper;
 import cn.treeshell.qa.model.Reply;
 import cn.treeshell.qa.service.ReplyService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -51,6 +54,7 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-qa:reply:", key = "#id")
     public void remove(String id) {
         this.baseMapper.deleteById(id);
     }
@@ -60,6 +64,7 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
      * @param reply
      */
     @Override
+    @CacheUpdate(name = "dc-qa:reply:", key = "#reply.id", value = "#reply")
     public void modify(Reply reply) {
         this.baseMapper.updateById(reply);
     }
@@ -79,6 +84,7 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
      * @return
      */
     @Override
+    @Cached(name = "dc-qa:reply:", key = "#id", expire = 3600)
     public Reply findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -89,6 +95,7 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
      * @return
      */
     @Override
+    @Cached(name = "dc-qa:replys:", expire = 3600)
     public List<Reply> findAll() {
 
         return this.getBaseMapper().selectList(null);

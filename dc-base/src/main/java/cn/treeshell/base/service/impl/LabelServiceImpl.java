@@ -3,6 +3,9 @@ package cn.treeshell.base.service.impl;
 import cn.treeshell.base.model.Label;
 import cn.treeshell.base.mapper.LabelMapper;
 import cn.treeshell.base.service.LabelService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -51,6 +54,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
      * @return
      */
     @Override
+    @Cached(name = "dc-base:users:", expire = 3600)
     public List<Label> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -58,10 +62,12 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
 
     /**
      * 根据 ID 查询
+     *
      * @param id
      * @return
      */
     @Override
+    @Cached(name = "dc-base:user:", key = "#id", expire = 3600)
     public Label findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -81,6 +87,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
      * @param label
      */
     @Override
+    @CacheUpdate(name = "dc-base:user:", key = "#label.id", value = "#label")
     public void modify(Label label) {
         this.getBaseMapper().updateById(label);
     }
@@ -90,6 +97,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-base:user:", key = "#id")
     public void remove(String id) {
         this.getBaseMapper().deleteById(id);
     }

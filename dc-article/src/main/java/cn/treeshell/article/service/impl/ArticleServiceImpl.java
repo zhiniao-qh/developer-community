@@ -3,6 +3,9 @@ package cn.treeshell.article.service.impl;
 import cn.treeshell.article.model.Article;
 import cn.treeshell.article.mapper.ArticleMapper;
 import cn.treeshell.article.service.ArticleService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -24,20 +27,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     /**
      * 更新文章状态
-     * @param articleId
+     * @param id
      */
     @Override
-    public void modifyState(String articleId) {
-        this.baseMapper.updateState(articleId);
+    public void modifyState(String id) {
+        this.baseMapper.updateState(id);
     }
 
     /**
      * 增加点赞数
-     * @param articleId
+     * @param id
      */
     @Override
-    public void addThumbup(String articleId) {
-        this.baseMapper.addThumbup(articleId);
+    public void addThumbup(String id) {
+        this.baseMapper.addThumbup(id);
     }
 
     /**
@@ -45,6 +48,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-article:articles:", expire = 3600)
     public List<Article> findAll() {
 
         return this.baseMapper.selectList(null);
@@ -56,6 +60,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @return
      */
     @Override
+    @Cached(name = "dc-article:article:", key = "#id", expire = 3600)
     public Article findById(String id) {
 
         return this.baseMapper.selectById(id);
@@ -99,6 +104,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @param article
      */
     @Override
+    @CacheUpdate(name = "dc-article:article:", key = "#article.id", value = "#article")
     public void modify(Article article) {
         this.baseMapper.updateById(article);
     }
@@ -108,6 +114,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-article:article:", key = "#id")
     public void remove(String id) {
         this.baseMapper.deleteById(id);
     }

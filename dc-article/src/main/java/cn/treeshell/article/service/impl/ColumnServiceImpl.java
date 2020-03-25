@@ -3,6 +3,9 @@ package cn.treeshell.article.service.impl;
 import cn.treeshell.article.model.Column;
 import cn.treeshell.article.mapper.ColumnMapper;
 import cn.treeshell.article.service.ColumnService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +30,7 @@ public class ColumnServiceImpl extends ServiceImpl<ColumnMapper, Column> impleme
      * @return
      */
     @Override
+    @Cached(name = "dc-article:columns:", expire = 3600)
     public List<Column> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -38,6 +42,7 @@ public class ColumnServiceImpl extends ServiceImpl<ColumnMapper, Column> impleme
      * @return
      */
     @Override
+    @Cached(name = "dc-article:column:", key = "#id", expire = 3600)
     public Column findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -81,6 +86,7 @@ public class ColumnServiceImpl extends ServiceImpl<ColumnMapper, Column> impleme
      * @param column
      */
     @Override
+    @CacheUpdate(name = "dc-article:column:", key = "#column.id", value = "#column")
     public void modify(Column column) {
         this.getBaseMapper().updateById(column);
     }
@@ -90,6 +96,7 @@ public class ColumnServiceImpl extends ServiceImpl<ColumnMapper, Column> impleme
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-article:column:", key = "#id")
     public void remove(String id) {
         this.getBaseMapper().deleteById(id);
     }

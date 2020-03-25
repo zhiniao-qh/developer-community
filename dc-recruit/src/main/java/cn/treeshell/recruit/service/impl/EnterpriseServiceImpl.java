@@ -3,6 +3,9 @@ package cn.treeshell.recruit.service.impl;
 import cn.treeshell.recruit.model.Enterprise;
 import cn.treeshell.recruit.mapper.EnterpriseMapper;
 import cn.treeshell.recruit.service.EnterpriseService;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.CacheUpdate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -27,6 +30,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      * @return
      */
     @Override
+    @Cached(name = "dc-recruit:enterprises:hotlist", expire = 3600)
     public List<Enterprise> hotlist() {
 
         return this.getBaseMapper().selectByIshot("1");
@@ -37,6 +41,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      * @return
      */
     @Override
+    @Cached(name = "dc-recruit:enterprises:", expire = 3600)
     public List<Enterprise> findAll() {
 
         return this.getBaseMapper().selectList(null);
@@ -48,6 +53,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      * @return
      */
     @Override
+    @Cached(name = "dc-recruit:enterprise:", key = "#id", expire = 3600)
     public Enterprise findById(String id) {
 
         return this.getBaseMapper().selectById(id);
@@ -91,6 +97,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      * @param enterprise
      */
     @Override
+    @CacheUpdate(name = "dc-recruit:enterprise:", key = "#enterprise.id", value = "#enterprise")
     public void modify(Enterprise enterprise) {
         this.getBaseMapper().updateById(enterprise);
     }
@@ -100,6 +107,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      * @param id
      */
     @Override
+    @CacheInvalidate(name = "dc-recruit:enterprise:", key = "#id")
     public void remove(String id) {
         this.getBaseMapper().deleteById(id);
     }
