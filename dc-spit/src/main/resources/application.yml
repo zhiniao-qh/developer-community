@@ -1,0 +1,12 @@
+server:
+  port: 9006
+spring:
+  application:
+    name: dc-spit
+  data:
+    mongodb:
+      host: 192.168.200.128
+      database: dc-spit
+  redis:
+    host: 192.168.200.128
+    timeout: 3000

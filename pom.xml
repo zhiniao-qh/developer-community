@@ -10,6 +10,7 @@
         <module>dc-qa</module>
         <module>dc-article</module>
         <module>dc-gathering</module>
+        <module>dc-spit</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
