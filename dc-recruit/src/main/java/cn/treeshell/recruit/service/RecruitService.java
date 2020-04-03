@@ -16,7 +16,7 @@ public interface RecruitService extends IService<Recruit> {
 
     List<Recruit> recommend();
 
-    List<Recruit> newlist();
+    List<Recruit> newList();
 
     List<Recruit> findAll();
 

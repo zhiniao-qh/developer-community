@@ -38,7 +38,7 @@ public class ReplyController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id){
 
         return new Result(true, StatusCode.OK, "查询成功", replyService.findById(id));
@@ -51,7 +51,7 @@ public class ReplyController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Reply reply, @PathVariable int page, @PathVariable int size){
         IPage<Reply> replyPage = replyService.findSearch(reply, page, size);
 
@@ -63,7 +63,7 @@ public class ReplyController {
      * @param reply
      * @return
      */
-    @PostMapping(value = "/search")
+    @PostMapping("/search")
     public Result findSearch(@RequestBody Reply reply) {
 
         return new Result(true,StatusCode.OK,"查询成功",  replyService.findSearch(reply));
@@ -87,7 +87,7 @@ public class ReplyController {
      * @param id
      * @return
      */
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Reply reply, @PathVariable String id) {
         reply.setId(id);
         replyService.modify(reply);
@@ -100,7 +100,7 @@ public class ReplyController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         replyService.remove(id);
 

@@ -24,42 +24,42 @@ public class ProblemController {
 
     /**
      * 最新问题
-     * @param labelid
+     * @param labelId
      * @param page
      * @param size
      * @return
      */
-    @GetMapping(value = "/newlist/{labelid}/{page}/{size}")
-    public Result newlist(@PathVariable String labelid, @PathVariable int page, @PathVariable int size) {
-        IPage<Problem> problemIPage = problemService.newlist(labelid, page, size);
+    @GetMapping("/newlist/{labelId}/{page}/{size}")
+    public Result newList(@PathVariable String labelId, @PathVariable int page, @PathVariable int size) {
+        IPage<Problem> problemIPage = problemService.newList(labelId, page, size);
 
         return new Result(true, StatusCode.OK, "查询成功", new PageResult<>(problemIPage.getTotal(), problemIPage.getRecords()));
     }
 
     /**
      * 最热问题
-     * @param labelid
+     * @param labelId
      * @param page
      * @param size
      * @return
      */
-    @GetMapping(value = "/hotlist/{labelid}/{page}/{size}")
-    public Result hotlist(@PathVariable String labelid, @PathVariable int page, @PathVariable int size) {
-        IPage<Problem> problemIPage = problemService.hotlist(labelid, page, size);
+    @GetMapping("/hotlist/{labelId}/{page}/{size}")
+    public Result hotList(@PathVariable String labelId, @PathVariable int page, @PathVariable int size) {
+        IPage<Problem> problemIPage = problemService.hotList(labelId, page, size);
 
         return new Result(true, StatusCode.OK, "查询成功", new PageResult<>(problemIPage.getTotal(), problemIPage.getRecords()));
     }
 
     /**
      * 最久未回复问题
-     * @param labelid
+     * @param labelId
      * @param page
      * @param size
      * @return
      */
-    @GetMapping(value = "/waitlist/{labelid}/{page}/{size}")
-    public Result waitlist(@PathVariable String labelid, @PathVariable int page, @PathVariable int size) {
-        IPage<Problem> problemIPage = problemService.waitlist(labelid, page, size);
+    @GetMapping("/waitlist/{labelId}/{page}/{size}")
+    public Result waitList(@PathVariable String labelId, @PathVariable int page, @PathVariable int size) {
+        IPage<Problem> problemIPage = problemService.waitList(labelId, page, size);
 
         return new Result(true, StatusCode.OK, "查询成功", new PageResult<>(problemIPage.getTotal(), problemIPage.getRecords()));
     }
@@ -79,7 +79,7 @@ public class ProblemController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", problemService.findById(id));
@@ -92,7 +92,7 @@ public class ProblemController {
      * @param size
      * @return
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Problem problem, @PathVariable int page, @PathVariable int size) {
         IPage<Problem> problemIPage = problemService.findSearch(problem, page, size);
 
@@ -104,7 +104,7 @@ public class ProblemController {
      * @param problem
      * @return
      */
-    @PostMapping(value="/search")
+    @PostMapping("/search")
     public Result findSearch(@RequestBody Problem problem) {
 
         return new Result(true, StatusCode.OK, "查询成功", problemService.findSearch(problem));
@@ -128,7 +128,7 @@ public class ProblemController {
      * @param id
      * @return
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Problem problem, @PathVariable String id) {
         problem.setId(id);
         problemService.modify(problem);
@@ -141,7 +141,7 @@ public class ProblemController {
      * @param id
      * @return
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         problemService.remove(id);
 

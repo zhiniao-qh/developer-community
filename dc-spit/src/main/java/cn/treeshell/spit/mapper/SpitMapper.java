@@ -6,10 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
- * @Author: panjing
- * @Date: 2020/3/28 23:12
+ * 吐槽 Mapper 接口
+ *
+ * @author panjing
+ * @since 2020-3-28
  */
 public interface SpitMapper extends MongoRepository<Spit, String> {
 
-    Page<Spit> findByParentid(String parentid, Pageable pageable);
+    Page<Spit> findByParentId(String parentId, Pageable pageable);
 }

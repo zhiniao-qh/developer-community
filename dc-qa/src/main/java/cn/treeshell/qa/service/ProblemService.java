@@ -18,11 +18,11 @@ public interface ProblemService extends IService<Problem> {
 
     List<Problem> findSearch(Problem problem);
 
-    IPage<Problem> hotlist(String labelid, int page, int size);
+    IPage<Problem> hotList(String labelId, int page, int size);
 
-    IPage<Problem> waitlist(String labelid, int page, int size);
+    IPage<Problem> waitList(String labelId, int page, int size);
 
-    IPage<Problem> newlist(String labelid, int page, int size);
+    IPage<Problem> newList(String labelId, int page, int size);
 
     List<Problem> findAll();
 

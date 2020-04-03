@@ -19,8 +19,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author: panjing
- * @Date: 2020/3/28 23:13
+ * 吐槽 服务实现类
+ *
+ * @author panjing
+ * @since 2020-3-28
  */
 @Service
 @Transactional
@@ -60,17 +62,17 @@ public class SpitServiceImpl implements SpitService {
      */
     public void add(Spit spit) {
         spit.set_id(idWorker.getIdStr());
-        spit.setPublishtime(new Date());
+        spit.setPublishTime(new Date());
         spit.setVisits(0);
         spit.setShare(0);
-        spit.setThumbup(0);
+        spit.setThumbUp(0);
         spit.setComment(0);
         spit.setState("1");
 
         // 如果当前添加的吐槽有父节点，那么父节点吐槽数 + 1
-        if (spit.getParentid() != null && !"".equals(spit.getParentid())) {
+        if (spit.getParentId() != null && !"".equals(spit.getParentId())) {
             Query query = new Query();
-            query.addCriteria(Criteria.where("_id").is(spit.getParentid()));
+            query.addCriteria(Criteria.where("_id").is(spit.getParentId()));
             Update update = new Update();
             update.inc("comment", 1);
 
@@ -97,16 +99,16 @@ public class SpitServiceImpl implements SpitService {
     }
 
     /**
-     * 按照 parentid 分页查询
-     * @param parentid
+     * 按照 parentId 分页查询
+     * @param parentId
      * @param page
      * @param size
      * @return
      */
-    public Page<Spit> findByParentid(String parentid, int page, int size) {
+    public Page<Spit> findByParentId(String parentId, int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        return spitMapper.findByParentid(parentid, pageable);
+        return spitMapper.findByParentId(parentId, pageable);
     }
 
     /**
@@ -115,11 +117,11 @@ public class SpitServiceImpl implements SpitService {
      * @param id
      */
     @Override
-    public void thumbup(String id) {
+    public void thumbUp(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         Update update = new Update();
-        update.inc("thumbup", 1);
+        update.inc("thumbUp", 1);
 
         mongoTemplate.updateFirst(query, update, "spit");
     }

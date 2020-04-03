@@ -1,5 +1,6 @@
 package cn.treeshell.recruit.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.recruit.model.Recruit;
 import cn.treeshell.recruit.mapper.RecruitMapper;
 import cn.treeshell.recruit.service.RecruitService;
@@ -32,8 +33,12 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Override
     @Cached(name = "dc-recruit:recruits:recommend", expire = 3600)
     public List<Recruit> recommend() {
+        QueryWrapper<Recruit> wrapper = new QueryWrapper<>();
+        wrapper.eq("state", "2");
+        wrapper.orderByAsc("create_time");
+        wrapper.last("limit 10");
 
-        return this.getBaseMapper().selectByState("2");
+        return this.baseMapper.selectList(wrapper);
     }
 
     /**
@@ -41,9 +46,13 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @return
      */
     @Override
-    public List<Recruit> newlist() {
+    public List<Recruit> newList() {
+        QueryWrapper<Recruit> wrapper = new QueryWrapper<>();
+        wrapper.eq("state", "1");
+        wrapper.orderByDesc("create_time");
+        wrapper.last("limit 10");
 
-        return this.getBaseMapper().selectByStateAndCreatetime("0");
+        return this.baseMapper.selectList(wrapper);
     }
 
     /**
@@ -54,7 +63,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Cached(name = "dc-recruit:recruits:", expire = 3600)
     public List<Recruit> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -66,7 +75,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Cached(name = "dc-recruit:recruit:", key = "#id", expire = 3600)
     public Recruit findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     /**
@@ -79,7 +88,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Override
     public IPage<Recruit> findSearch(Recruit recruit, int page, int size) {
 
-        return this.getBaseMapper().selectPage(new Page<>(page, size), createWrapper(recruit));
+        return this.baseMapper.selectPage(new Page<>(page, size), createWrapper(recruit));
     }
 
     /**
@@ -90,7 +99,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Override
     public List<Recruit> findSearch(Recruit recruit) {
 
-        return this.getBaseMapper().selectList(createWrapper(recruit));
+        return this.baseMapper.selectList(createWrapper(recruit));
     }
 
     /**
@@ -99,7 +108,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      */
     @Override
     public void add(Recruit recruit) {
-        this.getBaseMapper().insert(recruit);
+        this.baseMapper.insert(recruit);
     }
 
     /**
@@ -109,7 +118,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Override
     @CacheUpdate(name = "dc-recruit:recruit:", key = "#recruit.id", value ="#recruit")
     public void modify(Recruit recruit) {
-        this.getBaseMapper().updateById(recruit);
+        this.baseMapper.updateById(recruit);
     }
 
     /**
@@ -119,7 +128,7 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Override
     @CacheInvalidate(name = "dc-recruit:recruit:", key = "#id")
     public void remove(String id) {
-        this.getBaseMapper().deleteById(id);
+        this.baseMapper.deleteById(id);
     }
 
     /**
@@ -129,18 +138,18 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      */
     private QueryWrapper<Recruit> createWrapper(Recruit recruit) {
         QueryWrapper<Recruit> wrapper = new QueryWrapper<>();
-        wrapper.like(recruit.getId() != null, "id", recruit.getId());
-        wrapper.like(recruit.getJobname() != null, "jobname", recruit.getJobname());
-        wrapper.like(recruit.getSalary() != null, "salary", recruit.getSalary());
-        wrapper.like(recruit.getCondition() != null, "condition", recruit.getCondition());
-        wrapper.like(recruit.getEducation() != null, "education", recruit.getEducation() );
-        wrapper.like(recruit.getAddress() != null, "address", recruit.getAddress());
-        wrapper.like(recruit.getEid() != null, "eid", recruit.getEid());
-        wrapper.like(recruit.getLabel() != null, "label", recruit.getLabel());
-        wrapper.like(recruit.getContent1() != null, "content1", recruit.getContent1());
-        wrapper.like(recruit.getContent2() != null, "content2", recruit.getContent2());
-        wrapper.eq(recruit.getType() != null, "type", recruit.getType());
-        wrapper.eq(recruit.getState() != null, "state", recruit.getState());
+        wrapper.like(StrUtil.isNotBlank(recruit.getId()), "id", recruit.getId());
+        wrapper.like(StrUtil.isNotBlank(recruit.getJobName()), "job_name", recruit.getJobName());
+        wrapper.like(StrUtil.isNotBlank(recruit.getSalary()), "salary", recruit.getSalary());
+        wrapper.like(StrUtil.isNotBlank(recruit.getConditions()), "condition", recruit.getConditions());
+        wrapper.like(StrUtil.isNotBlank(recruit.getEducation()), "education", recruit.getEducation() );
+        wrapper.like(StrUtil.isNotBlank(recruit.getAddress()), "address", recruit.getAddress());
+        wrapper.like(StrUtil.isNotBlank(recruit.getEnterpriseId()), "enterprise_id", recruit.getEnterpriseId());
+        wrapper.like(StrUtil.isNotBlank(recruit.getLabel()), "label", recruit.getLabel());
+        wrapper.like(StrUtil.isNotBlank(recruit.getContent1()), "content1", recruit.getContent1());
+        wrapper.like(StrUtil.isNotBlank(recruit.getContent2()), "content2", recruit.getContent2());
+        wrapper.eq(StrUtil.isNotBlank(recruit.getType()), "type", recruit.getType());
+        wrapper.eq(StrUtil.isNotBlank(recruit.getState()), "state", recruit.getState());
 
         return wrapper;
     }

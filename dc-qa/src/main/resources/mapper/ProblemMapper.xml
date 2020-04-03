@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.treeshell.qa.mapper.ProblemMapper">
-    <select id="newlist" resultType="cn.treeshell.qa.model.Problem">
-        SELECT * FROM problem, reply WHERE id = problemid AND labelid = #{labelId} ORDER BY replytime DESC
+    <select id="newList" resultType="cn.treeshell.qa.model.Problem">
+        <!-- 第一个优化：小表做驱动表，时间复杂度为：O(n) + O(logn)，MySQL5.6 以后引入 BKL 算法，使得 JOIN 操作可以利用内存 -->
+        <!-- TODO 第二个优化：使用 SELECT * 类似的语句需要慎重 -->
+        SELECT * FROM problem p JOIN problem_label pl ON p.id = pl.problem_id
+        WHERE pl.label_id = #{labelId} ORDER BY p.reply_time DESC
     </select>
 
-    <select id="hotlist" resultType="cn.treeshell.qa.model.Problem">
-        SELECT * FROM problem, reply WHERE id = problemid AND labelid = #{labelId} ORDER BY reply DESC
+    <select id="hotList" resultType="cn.treeshell.qa.model.Problem">
+        <!-- TODO -->
+        SELECT * FROM problem p JOIN problem_label pl ON p.id = pl.problem_id
+        WHERE pl.label_id = #{labelId} ORDER BY p.reply DESC
     </select>
 
-    <select id="waitlist" resultType="cn.treeshell.qa.model.Problem">
-        SELECT * FROM problem, reply WHERE id = problemid AND labelid = #{labelId} AND reply=0 ORDER BY createtime DESC
-        </select>
+    <select id="waitList" resultType="cn.treeshell.qa.model.Problem">
+        <!-- TODO -->
+        SELECT * FROM problem p JOIN problem_label pl ON p.id = pl.problem_id
+        WHERE pl.label_id = #{labelId} AND p.reply = 0 ORDER BY p.create_time DESC
+    </select>
 </mapper>

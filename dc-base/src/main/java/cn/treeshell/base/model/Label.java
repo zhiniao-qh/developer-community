@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Label implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 标签ID
@@ -27,7 +27,7 @@ public class Label implements Serializable {
     /**
      * 标签名称
      */
-    private String labelname;
+    private String labelName;
 
     /**
      * 状态
@@ -48,6 +48,4 @@ public class Label implements Serializable {
      * 粉丝数
      */
     private Long fans;
-
-
 }

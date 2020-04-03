@@ -38,7 +38,7 @@ public class GatheringController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", gatheringService.findById(id));
@@ -52,7 +52,7 @@ public class GatheringController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Gathering gathering, @PathVariable int page, @PathVariable int size) {
         IPage<Gathering> gatheringIPage = gatheringService.findSearch(gathering, page, size);
 
@@ -64,7 +64,7 @@ public class GatheringController {
      * @param gathering
      * @return
      */
-    @PostMapping(value="/search")
+    @PostMapping("/search")
     public Result findSearch( @RequestBody Gathering gathering) {
 
         return new Result(true, StatusCode.OK, "查询成功", gatheringService.findSearch(gathering));
@@ -85,7 +85,7 @@ public class GatheringController {
      * 修改
      * @param gathering
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Gathering gathering, @PathVariable String id) {
         gathering.setId(id);
         gatheringService.modify(gathering);
@@ -97,7 +97,7 @@ public class GatheringController {
      * 删除
      * @param id
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result delete(@PathVariable String id) {
         gatheringService.delete(id);
 

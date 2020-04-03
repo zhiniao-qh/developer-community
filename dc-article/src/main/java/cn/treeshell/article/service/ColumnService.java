@@ -27,4 +27,8 @@ public interface ColumnService extends IService<Column> {
     void modify(Column column);
 
     void remove(String id);
+
+    void check(String id);
+
+    List<Column> findByUserId(String userId);
 }

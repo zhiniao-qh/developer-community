@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class Reply implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 编号
@@ -28,7 +28,7 @@ public class Reply implements Serializable {
     /**
      * 问题ID
      */
-    private String problemid;
+    private String problemId;
 
     /**
      * 回答内容
@@ -38,22 +38,20 @@ public class Reply implements Serializable {
     /**
      * 创建日期
      */
-    private LocalDateTime createtime;
+    private LocalDateTime createTime;
 
     /**
      * 更新日期
      */
-    private LocalDateTime updatetime;
+    private LocalDateTime updateTime;
 
     /**
      * 回答人ID
      */
-    private String userid;
+    private String userId;
 
     /**
      * 回答人昵称
      */
     private String nickname;
-
-
 }

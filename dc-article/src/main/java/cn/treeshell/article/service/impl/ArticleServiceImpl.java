@@ -1,5 +1,6 @@
 package cn.treeshell.article.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.article.model.Article;
 import cn.treeshell.article.mapper.ArticleMapper;
 import cn.treeshell.article.service.ArticleService;
@@ -7,6 +8,7 @@ import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,7 +33,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      */
     @Override
     public void modifyState(String id) {
-        this.baseMapper.updateState(id);
+        UpdateWrapper<Article> wrapper = new UpdateWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(id), "id", id);
+        wrapper.set("state", "1");
+
+        this.baseMapper.update(null, wrapper);
     }
 
     /**
@@ -39,8 +45,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      * @param id
      */
     @Override
-    public void addThumbup(String id) {
-        this.baseMapper.addThumbup(id);
+    public void thumbUp(String id) {
+        UpdateWrapper<Article> wrapper = new UpdateWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(id), "id", id);
+        wrapper.setSql("thumb_up = thumb_up + 1");
+
+        this.baseMapper.update(null, wrapper);
     }
 
     /**
@@ -91,6 +101,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     /**
+     * 查询头条文章
+     * @return
+     */
+    @Override
+    @Cached(name = "dc-article:articles:top", expire = 3600)
+    public List<Article> top() {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("is_top", "1");
+
+        return this.baseMapper.selectList(wrapper);
+    }
+
+    /**
      * 新增
      * @param article
      */
@@ -126,14 +149,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
      */
     private QueryWrapper<Article> createWrapper(Article article) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
-        wrapper.like(article.getId() != null, "id", article.getId());
-        wrapper.like(article.getColumnid() != null, "columnid", article.getColumnid());
-        wrapper.like(article.getChannelid() != null, "channelid", article.getChannelid());
-        wrapper.like(article.getTitle() != null, "title", article.getTitle());
-        wrapper.eq(article.getIspublic() != null, "ispublic", article.getIspublic());
-        wrapper.eq(article.getIstop() != null, "istop", article.getIstop());
-        wrapper.eq(article.getState() != null, "state", article.getState());
-        wrapper.eq(article.getType() != null, "type", article.getType());
+        wrapper.like(StrUtil.isNotBlank(article.getId()), "id", article.getId());
+        wrapper.like(StrUtil.isNotBlank(article.getColumnId()), "column_id", article.getColumnId());
+        wrapper.like(StrUtil.isNotBlank(article.getChannelId()), "channel_id", article.getChannelId());
+        wrapper.like(StrUtil.isNotBlank(article.getTitle()), "title", article.getTitle());
+        wrapper.eq(StrUtil.isNotBlank(article.getIsPublic()), "is_public", article.getIsPublic());
+        wrapper.eq(StrUtil.isNotBlank(article.getIsTop()), "is_top", article.getIsTop());
+        wrapper.eq(StrUtil.isNotBlank(article.getState()), "state", article.getState());
+        wrapper.eq(StrUtil.isNotBlank(article.getType()), "type", article.getType());
 
         return wrapper;
     }

@@ -1,5 +1,6 @@
 package cn.treeshell.article.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.article.model.Channel;
 import cn.treeshell.article.mapper.ChannelMapper;
 import cn.treeshell.article.service.ChannelService;
@@ -33,7 +34,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Cached(name = "dc-article:channels:", expire = 3600)
     public List<Channel> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -45,7 +46,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Cached(name = "dc-article:channel:", key = "#id", expire = 3600)
     public Channel findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     /**
@@ -58,7 +59,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Override
     public IPage<Channel> findSearch(Channel channel, int page, int size) {
 
-        return this.getBaseMapper().selectPage(new Page<>(page, size), createWrapper(channel));
+        return this.baseMapper.selectPage(new Page<>(page, size), createWrapper(channel));
     }
 
     /**
@@ -69,7 +70,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Override
     public List<Channel> findSearch(Channel channel) {
 
-        return this.getBaseMapper().selectList(createWrapper(channel));
+        return this.baseMapper.selectList(createWrapper(channel));
     }
 
     /**
@@ -78,7 +79,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
      */
     @Override
     public void add(Channel channel) {
-        this.getBaseMapper().insert(channel);
+        this.baseMapper.insert(channel);
     }
 
     /**
@@ -88,7 +89,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Override
     @CacheUpdate(name = "dc-article:channel:", key = "#channel.id", value = "#channel")
     public void modify(Channel channel) {
-        this.getBaseMapper().updateById(channel);
+        this.baseMapper.updateById(channel);
     }
 
     /**
@@ -98,7 +99,7 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Override
     @CacheInvalidate(name = "dc-article:channel:", key = "#id")
     public void remove(String id) {
-        this.getBaseMapper().deleteById(id);
+        this.baseMapper.deleteById(id);
     }
 
     /**
@@ -108,9 +109,9 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
      */
     private QueryWrapper<Channel> createWrapper(Channel channel) {
         QueryWrapper<Channel> wrapper = new QueryWrapper<>();
-        wrapper.like(channel.getId() != null, "id", channel.getId());
-        wrapper.like(channel.getName() != null, "name", channel.getName());
-        wrapper.eq(channel.getState() != null, "state", channel.getState());
+        wrapper.like(StrUtil.isNotBlank(channel.getId()), "id", channel.getId());
+        wrapper.like(StrUtil.isNotBlank(channel.getName()), "name", channel.getName());
+        wrapper.eq(StrUtil.isNotBlank(channel.getState()), "state", channel.getState());
 
         return wrapper;
     }

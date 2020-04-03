@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Recruit implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -27,7 +27,7 @@ public class Recruit implements Serializable {
     /**
      * 职位名称
      */
-    private String jobname;
+    private String jobName;
 
     /**
      * 薪资范围
@@ -37,7 +37,7 @@ public class Recruit implements Serializable {
     /**
      * 经验要求
      */
-    private String condition;
+    private String conditions;
 
     /**
      * 学历要求
@@ -57,12 +57,12 @@ public class Recruit implements Serializable {
     /**
      * 企业ID
      */
-    private String eid;
+    private String enterpriseId;
 
     /**
      * 创建日期
      */
-    private LocalDateTime createtime;
+    private LocalDateTime createTime;
 
     /**
      * 状态
@@ -88,6 +88,4 @@ public class Recruit implements Serializable {
      * 职位要求
      */
     private String content2;
-
-
 }

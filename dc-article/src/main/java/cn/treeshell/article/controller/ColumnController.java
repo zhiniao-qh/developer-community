@@ -24,6 +24,28 @@ public class ColumnController {
     private ColumnService columnService;
 
     /**
+     * 专栏审核
+     * @param id
+     * @return
+     */
+    @PutMapping("/examine/{id}")
+    public Result check(@PathVariable String id) {
+        columnService.check(id);
+
+        return new Result(true, StatusCode.OK, "审核成功");
+    }
+
+    /**
+     * 根据用户 ID 查询专栏列表
+     * @param userId
+     * @return
+     */
+    @GetMapping("/user/{userId}")
+    public Result findByUserId(@PathVariable String userId) {
+
+        return new Result(true, StatusCode.OK, "查询成功", columnService.findByUserId(userId));
+    }
+    /**
      * 查询全部数据
      * @return
      */
@@ -38,7 +60,7 @@ public class ColumnController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", columnService.findById(id));
@@ -52,7 +74,7 @@ public class ColumnController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Column column, @PathVariable int page, @PathVariable int size) {
         IPage<Column> columnIPage = columnService.findSearch(column, page, size);
 
@@ -64,8 +86,8 @@ public class ColumnController {
      * @param column
      * @return
      */
-    @PostMapping(value="/search")
-    public Result findSearch( @RequestBody Column column) {
+    @PostMapping("/search")
+    public Result findSearch(@RequestBody Column column) {
 
         return new Result(true, StatusCode.OK, "查询成功", columnService.findSearch(column));
     }
@@ -85,7 +107,7 @@ public class ColumnController {
      * 修改
      * @param column
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Column column, @PathVariable String id) {
         column.setId(id);
         columnService.modify(column);
@@ -97,7 +119,7 @@ public class ColumnController {
      * 删除
      * @param id
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         columnService.remove(id);
 

@@ -16,7 +16,7 @@ public interface ArticleService extends IService<Article> {
 
     void modifyState(String id);
 
-    void addThumbup(String id);
+    void thumbUp(String id);
 
     List<Article> findAll();
 
@@ -25,6 +25,8 @@ public interface ArticleService extends IService<Article> {
     IPage<Article> findSearch(Article article, int page, int size);
 
     List<Article> findSearch(Article article);
+
+    List<Article> top();
 
     void add(Article article);
 

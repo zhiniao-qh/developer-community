@@ -1,5 +1,6 @@
 package cn.treeshell.recruit.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.recruit.model.Enterprise;
 import cn.treeshell.recruit.mapper.EnterpriseMapper;
 import cn.treeshell.recruit.service.EnterpriseService;
@@ -30,10 +31,12 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      * @return
      */
     @Override
-    @Cached(name = "dc-recruit:enterprises:hotlist", expire = 3600)
-    public List<Enterprise> hotlist() {
+    @Cached(name = "dc-recruit:enterprises:hotList", expire = 3600)
+    public List<Enterprise> hotList() {
+        QueryWrapper<Enterprise> wrapper = new QueryWrapper<>();
+        wrapper.eq("is_hot", "1");
 
-        return this.getBaseMapper().selectByIshot("1");
+        return this.baseMapper.selectList(wrapper);
     }
 
     /**
@@ -44,7 +47,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     @Cached(name = "dc-recruit:enterprises:", expire = 3600)
     public List<Enterprise> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -56,7 +59,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     @Cached(name = "dc-recruit:enterprise:", key = "#id", expire = 3600)
     public Enterprise findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     /**
@@ -69,7 +72,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     @Override
     public IPage<Enterprise> findSearch(Enterprise enterprise, int page, int size) {
 
-        return this.getBaseMapper().selectPage(new Page<>(page, size), createWrapper(enterprise));
+        return this.baseMapper.selectPage(new Page<>(page, size), createWrapper(enterprise));
     }
 
     /**
@@ -80,7 +83,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     @Override
     public List<Enterprise> findSearch(Enterprise enterprise) {
 
-        return this.getBaseMapper().selectList(createWrapper(enterprise));
+        return this.baseMapper.selectList(createWrapper(enterprise));
     }
 
     /**
@@ -89,7 +92,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      */
     @Override
     public void add(Enterprise enterprise) {
-        this.getBaseMapper().insert(enterprise);
+        this.baseMapper.insert(enterprise);
     }
 
     /**
@@ -99,7 +102,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     @Override
     @CacheUpdate(name = "dc-recruit:enterprise:", key = "#enterprise.id", value = "#enterprise")
     public void modify(Enterprise enterprise) {
-        this.getBaseMapper().updateById(enterprise);
+        this.baseMapper.updateById(enterprise);
     }
 
     /**
@@ -109,7 +112,7 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
     @Override
     @CacheInvalidate(name = "dc-recruit:enterprise:", key = "#id")
     public void remove(String id) {
-        this.getBaseMapper().deleteById(id);
+        this.baseMapper.deleteById(id);
     }
 
     /**
@@ -119,13 +122,13 @@ public class EnterpriseServiceImpl extends ServiceImpl<EnterpriseMapper, Enterpr
      */
     private QueryWrapper<Enterprise> createWrapper(Enterprise enterprise) {
         QueryWrapper<Enterprise> wrapper = new QueryWrapper<>();
-        wrapper.like(enterprise.getId() != null, "id", enterprise.getId());
-        wrapper.like(enterprise.getName() != null, "name", enterprise.getName());
-        wrapper.like(enterprise.getSummary() != null, "summary", enterprise.getSummary());
-        wrapper.like(enterprise.getAddress() != null, "address", enterprise.getAddress());
-        wrapper.like(enterprise.getLabels() != null, "labels", enterprise.getLabels());
-        wrapper.like(enterprise.getCoordinate() != null, "coordinate", enterprise.getCoordinate());
-        wrapper.eq(enterprise.getId() != null, "ishot", enterprise.getIshot());
+        wrapper.like(StrUtil.isNotBlank(enterprise.getId()), "id", enterprise.getId());
+        wrapper.like(StrUtil.isNotBlank(enterprise.getName()), "name", enterprise.getName());
+        wrapper.like(StrUtil.isNotBlank(enterprise.getSummary()), "summary", enterprise.getSummary());
+        wrapper.like(StrUtil.isNotBlank(enterprise.getAddress()), "address", enterprise.getAddress());
+        wrapper.like(StrUtil.isNotBlank(enterprise.getLabels()), "labels", enterprise.getLabels());
+        wrapper.like(StrUtil.isNotBlank(enterprise.getCoordinate()), "coordinate", enterprise.getCoordinate());
+        wrapper.eq(StrUtil.isNotBlank(enterprise.getIsHot()), "is_hot", enterprise.getIsHot());
 
         return wrapper;
     }

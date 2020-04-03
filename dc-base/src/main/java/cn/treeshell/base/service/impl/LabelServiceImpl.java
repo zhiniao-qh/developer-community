@@ -1,5 +1,6 @@
 package cn.treeshell.base.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.base.model.Label;
 import cn.treeshell.base.mapper.LabelMapper;
 import cn.treeshell.base.service.LabelService;
@@ -26,6 +27,33 @@ import java.util.List;
 public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements LabelService {
 
     /**
+     * 推荐标签列表
+     * @return
+     */
+    @Override
+    @Cached(name = "dc-base:users:recommend:", expire = 3600)
+    public List<Label> findTopList(String recommend) {
+        QueryWrapper<Label> wrapper =  new QueryWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(recommend), "recommend", recommend);
+
+
+        return this.baseMapper.selectList(wrapper);
+    }
+
+    /**
+     * 有效标签列表
+     * @return
+     */
+    @Override
+    @Cached(name = "dc-base:users:state:", expire = 3600)
+    public List<Label> findByState(String state) {
+        QueryWrapper<Label> wrapper = new QueryWrapper<>();
+        wrapper.eq(StrUtil.isNotBlank(state), "state", state);
+
+        return this.baseMapper.selectList(wrapper);
+    }
+
+    /**
      * 分页 + 多条件查询
      * @param label
      * @param page
@@ -35,7 +63,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Override
     public IPage<Label> findSearch(Label label, int page, int size) {
 
-        return this.getBaseMapper().selectPage(new Page<>(page, size), createWrapper(label));
+        return this.baseMapper.selectPage(new Page<>(page, size), createWrapper(label));
     }
 
     /**
@@ -46,7 +74,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Override
     public List<Label> findSearch(Label label) {
 
-        return this.getBaseMapper().selectList(createWrapper(label));
+        return this.baseMapper.selectList(createWrapper(label));
     }
 
     /**
@@ -57,7 +85,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Cached(name = "dc-base:users:", expire = 3600)
     public List<Label> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -70,7 +98,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Cached(name = "dc-base:user:", key = "#id", expire = 3600)
     public Label findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     /**
@@ -79,7 +107,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
      */
     @Override
     public void add(Label label) {
-        this.getBaseMapper().insert(label);
+        this.baseMapper.insert(label);
     }
 
     /**
@@ -89,7 +117,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Override
     @CacheUpdate(name = "dc-base:user:", key = "#label.id", value = "#label")
     public void modify(Label label) {
-        this.getBaseMapper().updateById(label);
+        this.baseMapper.updateById(label);
     }
 
     /**
@@ -99,7 +127,7 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
     @Override
     @CacheInvalidate(name = "dc-base:user:", key = "#id")
     public void remove(String id) {
-        this.getBaseMapper().deleteById(id);
+        this.baseMapper.deleteById(id);
     }
 
     /**
@@ -109,8 +137,8 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
      */
     private QueryWrapper<Label> createWrapper(Label label) {
         QueryWrapper<Label> wrapper = new QueryWrapper<>();
-        wrapper.like(label.getLabelname() != null, "labelname", label.getLabelname());
-        wrapper.like(label.getState() != null, "state", label.getState());
+        wrapper.like(StrUtil.isNotBlank(label.getLabelName()), "label_name", label.getLabelName());
+        wrapper.like(StrUtil.isNotBlank(label.getState()), "state", label.getState());
 
         return wrapper;
     }

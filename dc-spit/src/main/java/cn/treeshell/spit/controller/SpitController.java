@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 吐槽 前端控制器
- * @Author: panjing
- * @Date: 2020/3/28 23:24
+ *
+ * @author panjing
+ * @since 2020-3-28
  */
 @CrossOrigin
 @RestController
@@ -41,7 +42,7 @@ public class SpitController {
      * @param id
      * @return
      */
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", spitService.findById(id));
@@ -65,7 +66,7 @@ public class SpitController {
      * @param spit
      * @return
      */
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public Result modify(@PathVariable String id, @RequestBody Spit spit) {
         spit.set_id(id);
         spitService.modify(spit);
@@ -78,7 +79,7 @@ public class SpitController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         spitService.remove(id);
 
@@ -87,14 +88,14 @@ public class SpitController {
 
     /**
      * 根据父节点 ID 分页查询
-     * @param parentid
+     * @param parentId
      * @param page
      * @param size
      * @return
      */
-    @GetMapping(value = "/{parentid}/{page}/{size}")
-    public Result findByParentid(@PathVariable String parentid, @PathVariable int page, @PathVariable int size) {
-        Page<Spit> spitPage = spitService.findByParentid(parentid, page, size);
+    @GetMapping("/{parentId}/{page}/{size}")
+    public Result findByParentId(@PathVariable String parentId, @PathVariable int page, @PathVariable int size) {
+        Page<Spit> spitPage = spitService.findByParentId(parentId, page, size);
 
         return new Result(true, StatusCode.OK, "查询成功", new PageResult<>(spitPage.getTotalElements(), spitPage.getContent()));
     }
@@ -104,17 +105,18 @@ public class SpitController {
      * @param id
      * @return
      */
-    @PutMapping(value = "/thumbup/{id}")
-    public Result thumbup(@PathVariable String id) {
+    @PutMapping("/thumbup/{id}")
+    public Result thumbUp(@PathVariable String id) {
         // 判断当前用户是否已经点赞 TODO 测试
-        String userid = "1";
+        String userId = "1";
 
-        if (redisTemplate.opsForValue().get("thumbup_" + userid + "_" + id) != null) {
+        String key = "thumbUp_" + userId + "_" + id;
+        if (redisTemplate.opsForValue().get(key) != null) {
             return new Result(true, StatusCode.REPERROR, "不能重复点赞");
         }
 
-        spitService.thumbup(id);
-        redisTemplate.opsForValue().set("thumbup_" + userid + "_" + id, 1);
+        spitService.thumbUp(id);
+        redisTemplate.opsForValue().set(key, 1);
 
         return new Result(true, StatusCode.OK, "点赞成功");
     }

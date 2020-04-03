@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Enterprise implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -51,7 +51,7 @@ public class Enterprise implements Serializable {
     /**
      * 是否热门
      */
-    private String ishot;
+    private String isHot;
 
     /**
      * LOGO
@@ -61,12 +61,10 @@ public class Enterprise implements Serializable {
     /**
      * 职位数
      */
-    private Integer jobcount;
+    private Integer jobCount;
 
     /**
      * URL
      */
     private String url;
-
-
 }

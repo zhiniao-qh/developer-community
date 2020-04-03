@@ -14,5 +14,4 @@ import java.util.List;
  */
 public interface EnterpriseMapper extends BaseMapper<Enterprise> {
 
-    List<Enterprise> selectByIshot(@Param("isHot") String isHot);
 }

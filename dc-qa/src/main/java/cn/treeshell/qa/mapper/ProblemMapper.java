@@ -13,9 +13,9 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ProblemMapper extends BaseMapper<Problem> {
 
-    IPage<Problem> newlist(@Param("labelId") String labelId, IPage<Problem> problemIPage);
+    IPage<Problem> newList(@Param("labelId") String labelId, IPage<Problem> problemIPage);
 
-    IPage<Problem> hotlist(@Param("labelId") String labelId, IPage<Problem> problemIPage);
+    IPage<Problem> hotList(@Param("labelId") String labelId, IPage<Problem> problemIPage);
 
-    IPage<Problem> waitlist(@Param("labelId") String labelId, IPage<Problem> problemIPage);
+    IPage<Problem> waitList(@Param("labelId") String labelId, IPage<Problem> problemIPage);
 }

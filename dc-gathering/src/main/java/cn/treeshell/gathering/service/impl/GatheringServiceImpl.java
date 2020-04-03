@@ -1,5 +1,6 @@
 package cn.treeshell.gathering.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.gathering.mapper.GatheringMapper;
 import cn.treeshell.gathering.model.Gathering;
 import cn.treeshell.gathering.service.GatheringService;
@@ -33,7 +34,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
     @Cached(name = "dc-gathering:gatherings:", expire = 3600)
     public List<Gathering> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -45,7 +46,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
     @Cached(name = "dc-gathering:gathering:", key = "#id", expire = 3600)
     public Gathering findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     /**
@@ -58,7 +59,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
     @Override
     public IPage<Gathering> findSearch(Gathering gathering, int page, int size) {
 
-        return this.getBaseMapper().selectPage(new Page<>(page, size), createWrapper(gathering));
+        return this.baseMapper.selectPage(new Page<>(page, size), createWrapper(gathering));
     }
 
     /**
@@ -69,7 +70,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
     @Override
     public List<Gathering> findSearch(Gathering gathering) {
 
-        return this.getBaseMapper().selectList(createWrapper(gathering));
+        return this.baseMapper.selectList(createWrapper(gathering));
     }
 
     /**
@@ -78,7 +79,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
      */
     @Override
     public void add(Gathering gathering) {
-        this.getBaseMapper().insert(gathering);
+        this.baseMapper.insert(gathering);
     }
 
     /**
@@ -88,7 +89,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
     @Override
     @CacheUpdate(name = "dc-gathering:gathering:", key = "#gathering.id", value = "#gathering")
     public void modify(Gathering gathering) {
-        this.getBaseMapper().updateById(gathering);
+        this.baseMapper.updateById(gathering);
     }
 
     /**
@@ -98,7 +99,7 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
     @Override
     @CacheInvalidate(name = "dc-gathering:gathering:", key = "#id")
     public void delete(String id) {
-        this.getBaseMapper().deleteById(id);
+        this.baseMapper.deleteById(id);
     }
 
     /**
@@ -108,13 +109,13 @@ public class GatheringServiceImpl extends ServiceImpl<GatheringMapper, Gathering
      */
     private QueryWrapper<Gathering> createWrapper(Gathering gathering) {
         QueryWrapper<Gathering> wrapper = new QueryWrapper<>();
-        wrapper.like(gathering.getId() != null, "id", gathering.getId());
-        wrapper.like(gathering.getName() != null, "name", gathering.getName());
-        wrapper.like(gathering.getSummary() != null, "summary", gathering.getSummary());
-        wrapper.like(gathering.getSponsor() != null, "sponsor", gathering.getSponsor());
-        wrapper.like(gathering.getAddress() != null, "address", gathering.getAddress());
-        wrapper.like(gathering.getCity() != null, "city", gathering.getCity());
-        wrapper.eq(gathering.getState() != null, "state", gathering.getState());
+        wrapper.like(StrUtil.isNotBlank(gathering.getId()), "id", gathering.getId());
+        wrapper.like(StrUtil.isNotBlank(gathering.getName()), "name", gathering.getName());
+        wrapper.like(StrUtil.isNotBlank(gathering.getSummary()), "summary", gathering.getSummary());
+        wrapper.like(StrUtil.isNotBlank(gathering.getSponsor()), "sponsor", gathering.getSponsor());
+        wrapper.like(StrUtil.isNotBlank(gathering.getAddress()), "address", gathering.getAddress());
+        wrapper.like(StrUtil.isNotBlank(gathering.getCity()), "city", gathering.getCity());
+        wrapper.eq(StrUtil.isNotBlank(gathering.getState()), "state", gathering.getState());
 
         return wrapper;
     }

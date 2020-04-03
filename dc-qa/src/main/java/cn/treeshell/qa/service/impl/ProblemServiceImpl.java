@@ -1,5 +1,6 @@
 package cn.treeshell.qa.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.qa.mapper.ProblemMapper;
 import cn.treeshell.qa.model.Problem;
 import cn.treeshell.qa.service.ProblemService;
@@ -51,43 +52,43 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
 
     /**
      * 最热问题
-     * @param labelid
+     * @param labelId
      * @param page
      * @param size
      * @return
      */
     @Override
-    @Cached(name = "dc-qa:problems:hotlist:", key = "#labelid", expire = 1200)
-    public IPage<Problem> hotlist(String labelid, int page, int size) {
-
-        return this.baseMapper.hotlist(labelid, new Page<>(page, size));
+    @Cached(name = "dc-qa:problems:hotList:", key = "#labelId", expire = 1200)
+    public IPage<Problem> hotList(String labelId, int page, int size) {
+        
+        return this.baseMapper.hotList(labelId, new Page<>(page, size));
     }
 
     /**
      * 最久未回复问题
-     * @param labelid
+     * @param labelId
      * @param page
      * @param size
      * @return
      */
     @Override
-    @Cached(name = "dc-qa:problems:waitlist:", key = "#labelid", expire = 3600)
-    public IPage<Problem> waitlist(String labelid, int page, int size) {
+    @Cached(name = "dc-qa:problems:waitList:", key = "#labelId", expire = 3600)
+    public IPage<Problem> waitList(String labelId, int page, int size) {
 
-        return this.baseMapper.waitlist(labelid, new Page<>(page, size));
+        return this.baseMapper.waitList(labelId, new Page<>(page, size));
     }
 
     /**
      * 最新问题
-     * @param labelid
+     * @param labelId
      * @param page
      * @param size
      * @return
      */
     @Override
-    public IPage<Problem> newlist(String labelid, int page, int size) {
+    public IPage<Problem> newList(String labelId, int page, int size) {
 
-        return this.baseMapper.newlist(labelid, new Page<>(page, size));
+        return this.baseMapper.newList(labelId, new Page<>(page, size));
     }
 
     /**
@@ -98,7 +99,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Cached(name = "dc-qa:problems:", expire = 3600)
     public List<Problem> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -110,7 +111,7 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
     @Cached(name = "dc-qa:problem:", key = "#id", expire = 3600)
     public Problem findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
 
@@ -150,13 +151,13 @@ public class ProblemServiceImpl extends ServiceImpl<ProblemMapper, Problem> impl
      */
     private QueryWrapper<Problem> createWrapper(Problem problem) {
         QueryWrapper<Problem> wrapper = new QueryWrapper<>();
-        wrapper.like(problem.getId() != null, "id", problem.getId());
-        wrapper.like(problem.getTitle() != null, "title", problem.getTitle());
-        wrapper.like(problem.getContent() != null, "content", problem.getContent());
-        wrapper.like(problem.getUserid() != null, "userid", problem.getUserid());
-        wrapper.like(problem.getNickname() != null, "nickname", problem.getNickname());
-        wrapper.like(problem.getSolve() != null, "solve", problem.getSolve());
-        wrapper.like(problem.getReplyname() != null, "replyname", problem.getReplyname());
+        wrapper.like(StrUtil.isNotBlank(problem.getId()), "id", problem.getId());
+        wrapper.like(StrUtil.isNotBlank(problem.getTitle()), "title", problem.getTitle());
+        wrapper.like(StrUtil.isNotBlank(problem.getContent()), "content", problem.getContent());
+        wrapper.like(StrUtil.isNotBlank(problem.getUserId()), "user_id", problem.getUserId());
+        wrapper.like(StrUtil.isNotBlank(problem.getNickname()), "nickname", problem.getNickname());
+        wrapper.like(StrUtil.isNotBlank(problem.getSolve()), "solve", problem.getSolve());
+        wrapper.like(StrUtil.isNotBlank(problem.getReplyName()), "reply_name", problem.getReplyName());
 
         return wrapper;
     }

@@ -1,5 +1,6 @@
 package cn.treeshell.qa.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.qa.mapper.ReplyMapper;
 import cn.treeshell.qa.model.Reply;
 import cn.treeshell.qa.service.ReplyService;
@@ -87,7 +88,7 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
     @Cached(name = "dc-qa:reply:", key = "#id", expire = 3600)
     public Reply findById(String id) {
 
-        return this.getBaseMapper().selectById(id);
+        return this.baseMapper.selectById(id);
     }
 
     /**
@@ -95,10 +96,10 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
      * @return
      */
     @Override
-    @Cached(name = "dc-qa:replys:", expire = 3600)
+    @Cached(name = "dc-qa:replies:", expire = 3600)
     public List<Reply> findAll() {
 
-        return this.getBaseMapper().selectList(null);
+        return this.baseMapper.selectList(null);
     }
 
     /**
@@ -108,11 +109,11 @@ public class ReplyServiceImpl extends ServiceImpl<ReplyMapper, Reply> implements
      */
     private QueryWrapper<Reply> createWrapper(Reply reply) {
         QueryWrapper<Reply> wrapper = new QueryWrapper<>();
-        wrapper.like(reply.getId() != null, "id", reply.getId());
-        wrapper.like(reply.getProblemid() != null, "problemid", reply.getProblemid());
-        wrapper.like(reply.getContent() != null, "content", reply.getContent());
-        wrapper.like(reply.getUserid() != null, "userid", reply.getUserid());
-        wrapper.like(reply.getNickname() != null, "nickname", reply.getNickname());
+        wrapper.like(StrUtil.isNotBlank(reply.getId()), "id", reply.getId());
+        wrapper.like(StrUtil.isNotBlank(reply.getProblemId()), "problem_id", reply.getProblemId());
+        wrapper.like(StrUtil.isNotBlank(reply.getContent()), "content", reply.getContent());
+        wrapper.like(StrUtil.isNotBlank(reply.getUserId()), "user_id", reply.getUserId());
+        wrapper.like(StrUtil.isNotBlank(reply.getNickname()), "nickname", reply.getNickname());
 
         return wrapper;
     }

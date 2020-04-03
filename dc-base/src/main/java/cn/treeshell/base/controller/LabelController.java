@@ -26,6 +26,26 @@ public class LabelController {
     private LabelService labelService;
 
     /**
+     * 推荐标签列表
+     * @return
+     */
+    @GetMapping("/recommend")
+    public Result recommend() {
+
+        return new Result(true, StatusCode.OK, "查询成功", labelService.findTopList("1"));
+    }
+
+    /**
+     * 有效标签列表
+     * @return
+     */
+    @GetMapping("/list")
+    public Result list() {
+
+        return new Result(true, StatusCode.OK, "查询成功", labelService.findByState("1"));
+    }
+
+    /**
      * 查询全部
      * @return
      */
@@ -40,7 +60,7 @@ public class LabelController {
      * @param id
      * @return
      */
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", labelService.findById(id));
@@ -52,7 +72,7 @@ public class LabelController {
      * @param label
      * @return
      */
-    @PostMapping(value = "/search")
+    @PostMapping("/search")
     public Result findSearch(@RequestBody Label label) {
         List<Label> list = labelService.findSearch(label);
 
@@ -66,7 +86,7 @@ public class LabelController {
      * @param size
      * @return
      */
-    @PostMapping(value = "/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Label label, @PathVariable int page, @PathVariable int size) {
         IPage<Label> labelPage = labelService.findSearch(label, page, size);
 
@@ -91,7 +111,7 @@ public class LabelController {
      * @param label
      * @return
      */
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public Result modify(@PathVariable String id, @RequestBody Label label) {
         label.setId(id);
         labelService.modify(label);
@@ -104,7 +124,7 @@ public class LabelController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         labelService.remove(id);
 

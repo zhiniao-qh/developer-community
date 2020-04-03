@@ -14,7 +14,4 @@ import java.util.List;
  */
 public interface RecruitMapper extends BaseMapper<Recruit> {
 
-    List<Recruit> selectByState(@Param("state") String state);
-
-    List<Recruit> selectByStateAndCreatetime(@Param("state")String state);
 }

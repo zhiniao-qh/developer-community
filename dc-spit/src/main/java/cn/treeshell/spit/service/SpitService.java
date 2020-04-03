@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 /**
- * @Author: panjing
- * @Date: 2020/3/28 23:13
+ * 吐槽 服务类
+ *
+ * @author panjing
+ * @since 2020-3-28
  */
 public interface SpitService {
 
@@ -21,7 +23,7 @@ public interface SpitService {
 
     void remove(String id);
 
-    Page<Spit> findByParentid(String parentid, int page, int size);
+    Page<Spit> findByParentId(String parentId, int page, int size);
 
-    void thumbup(String id);
+    void thumbUp(String id);
 }

@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Channel implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -32,6 +32,4 @@ public class Channel implements Serializable {
      * 状态
      */
     private String state;
-
-
 }

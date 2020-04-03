@@ -28,7 +28,7 @@ public class ArticleController {
      * @param id
      * @return
      */
-    @PutMapping(value = "/examine/{id}")
+    @PutMapping("/examine/{id}")
     public Result modifyState(@PathVariable String id) {
         articleService.modifyState(id);
 
@@ -40,11 +40,22 @@ public class ArticleController {
      * @param id
      * @return
      */
-    @PutMapping(value = "/thumbup/{id}")
-    public Result addThumbup(@PathVariable String id) {
-        articleService.addThumbup(id);
+    @PutMapping("/thumb_up/{id}")
+    public Result thumbUp(@PathVariable String id) {
+        articleService.thumbUp(id);
+        // TODO: 关于重复点赞的逻辑
 
         return new Result(true, StatusCode.OK, "点赞成功");
+    }
+
+    /**
+     * 查询头条文章
+     * @return
+     */
+    @GetMapping("/top")
+    public Result top() {
+
+        return new Result(true, StatusCode.OK, "查询成功", articleService.top());
     }
 
     /**
@@ -61,7 +72,7 @@ public class ArticleController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", articleService.findById(id));
@@ -75,7 +86,7 @@ public class ArticleController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Article article, @PathVariable int page, @PathVariable int size) {
         IPage<Article> articleIPage = articleService.findSearch(article, page, size);
 
@@ -87,7 +98,7 @@ public class ArticleController {
      * @param article
      * @return
      */
-    @PostMapping(value="/search")
+    @PostMapping("/search")
     public Result findSearch( @RequestBody Article article) {
 
         return new Result(true, StatusCode.OK, "查询成功", articleService.findSearch(article));
@@ -108,7 +119,7 @@ public class ArticleController {
      * 修改
      * @param article
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Article article, @PathVariable String id) {
         article.setId(id);
         articleService.modify(article);
@@ -120,7 +131,7 @@ public class ArticleController {
      * 删除
      * @param id
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         articleService.remove(id);
 
@@ -128,4 +139,3 @@ public class ArticleController {
     }
 
 }
-

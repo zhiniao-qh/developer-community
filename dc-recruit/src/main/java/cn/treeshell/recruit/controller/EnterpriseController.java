@@ -30,7 +30,7 @@ public class EnterpriseController {
     @GetMapping("/search/hotlist")
     public Result hotList() {
 
-        return new Result(true, StatusCode.OK, "查询成功", enterpriseService.hotlist());
+        return new Result(true, StatusCode.OK, "查询成功", enterpriseService.hotList());
     }
 
     /**
@@ -48,7 +48,7 @@ public class EnterpriseController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", enterpriseService.findById(id));
@@ -62,7 +62,7 @@ public class EnterpriseController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Enterprise enterprise , @PathVariable int page, @PathVariable int size) {
         IPage<Enterprise> enterpriseIPage = enterpriseService.findSearch(enterprise, page, size);
 
@@ -74,7 +74,7 @@ public class EnterpriseController {
      * @param enterprise
      * @return
      */
-    @PostMapping(value="/search")
+    @PostMapping("/search")
     public Result findSearch( @RequestBody Enterprise enterprise) {
 
         return new Result(true, StatusCode.OK, "查询成功", enterpriseService.findSearch(enterprise));
@@ -95,7 +95,7 @@ public class EnterpriseController {
      * 修改
      * @param enterprise
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Enterprise enterprise, @PathVariable String id) {
         enterprise.setId(id);
         enterpriseService.modify(enterprise);
@@ -107,7 +107,7 @@ public class EnterpriseController {
      * 删除
      * @param id
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         enterpriseService.remove(id);
 

@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Article implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -27,12 +27,12 @@ public class Article implements Serializable {
     /**
      * 专栏ID
      */
-    private String columnid;
+    private String columnId;
 
     /**
      * 用户ID
      */
-    private String userid;
+    private String userId;
 
     /**
      * 标题
@@ -52,22 +52,22 @@ public class Article implements Serializable {
     /**
      * 发表日期
      */
-    private LocalDateTime createtime;
+    private LocalDateTime createTime;
 
     /**
      * 修改日期
      */
-    private LocalDateTime updatetime;
+    private LocalDateTime updateTime;
 
     /**
      * 是否公开
      */
-    private String ispublic;
+    private String isPublic;
 
     /**
      * 是否置顶
      */
-    private String istop;
+    private String isTop;
 
     /**
      * 浏览量
@@ -77,7 +77,7 @@ public class Article implements Serializable {
     /**
      * 点赞数
      */
-    private Integer thumbup;
+    private Integer thumbUp;
 
     /**
      * 评论数
@@ -92,7 +92,7 @@ public class Article implements Serializable {
     /**
      * 所属频道
      */
-    private String channelid;
+    private String channelId;
 
     /**
      * URL
@@ -103,6 +103,4 @@ public class Article implements Serializable {
      * 类型
      */
     private String type;
-
-
 }

@@ -38,9 +38,9 @@ public class RecruitController {
      * @return
      */
     @GetMapping("/search/newlist")
-    public Result newlist() {
+    public Result newList() {
 
-        return new Result(true, StatusCode.OK, "查询成功", recruitService.newlist());
+        return new Result(true, StatusCode.OK, "查询成功", recruitService.newList());
     }
 
     /**
@@ -48,7 +48,7 @@ public class RecruitController {
      * @return
      */
     @GetMapping
-    public Result findAll(){
+    public Result findAll() {
 
         return new Result(true, StatusCode.OK, "查询成功", recruitService.findAll());
     }
@@ -58,7 +58,7 @@ public class RecruitController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", recruitService.findById(id));
@@ -72,7 +72,7 @@ public class RecruitController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
+    @PostMapping("/search/{page}/{size}")
     public Result findSearch(@RequestBody Recruit recruit, @PathVariable int page, @PathVariable int size) {
         IPage<Recruit> recruitIPage = recruitService.findSearch(recruit, page, size);
 
@@ -84,7 +84,7 @@ public class RecruitController {
      * @param recruit
      * @return
      */
-    @PostMapping(value="/search")
+    @PostMapping("/search")
     public Result findSearch( @RequestBody Recruit recruit) {
 
         return new Result(true, StatusCode.OK,"查询成功", recruitService.findSearch(recruit));
@@ -105,7 +105,7 @@ public class RecruitController {
      * 修改
      * @param recruit
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Recruit recruit, @PathVariable String id) {
         recruit.setId(id);
         recruitService.modify(recruit);
@@ -117,7 +117,7 @@ public class RecruitController {
      * 删除
      * @param id
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         recruitService.remove(id);
 

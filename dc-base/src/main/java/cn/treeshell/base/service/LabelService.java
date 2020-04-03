@@ -27,4 +27,8 @@ public interface LabelService extends IService<Label> {
     void modify(Label label);
 
     void remove(String id);
+
+    List<Label> findTopList(String recommend);
+
+    List<Label> findByState(String state);
 }

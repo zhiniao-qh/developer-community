@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Gathering implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 编号
@@ -52,12 +52,12 @@ public class Gathering implements Serializable {
     /**
      * 开始时间
      */
-    private LocalDateTime starttime;
+    private LocalDateTime startTime;
 
     /**
      * 截止时间
      */
-    private LocalDateTime endtime;
+    private LocalDateTime endTime;
 
     /**
      * 举办地点
@@ -67,7 +67,7 @@ public class Gathering implements Serializable {
     /**
      * 报名截止
      */
-    private LocalDateTime enrolltime;
+    private LocalDateTime enrollTime;
 
     /**
      * 是否可见
@@ -78,6 +78,4 @@ public class Gathering implements Serializable {
      * 城市
      */
     private String city;
-
-
 }

@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Column implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * ID
@@ -37,22 +37,20 @@ public class Column implements Serializable {
     /**
      * 用户ID
      */
-    private String userid;
+    private String userId;
 
     /**
      * 申请日期
      */
-    private LocalDateTime createtime;
+    private LocalDateTime createTime;
 
     /**
      * 审核日期
      */
-    private LocalDateTime checktime;
+    private LocalDateTime checkTime;
 
     /**
      * 状态
      */
     private String state;
-
-
 }

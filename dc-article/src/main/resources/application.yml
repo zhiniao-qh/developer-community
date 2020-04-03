@@ -14,6 +14,10 @@ spring:
       maximum-pool-size: 10
       connection-timeout: 30000
       max-lifetime: 1800000
+  data:
+    mongodb:
+      host: 192.168.200.128
+      database: dc-article
 
 ### MyBatis Plus 相关配置 ###
 mybatis-plus:
@@ -21,6 +25,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id #自3.3.0开始,默认使用雪花算法+UUID
+      table-underline: true
     banner: false
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

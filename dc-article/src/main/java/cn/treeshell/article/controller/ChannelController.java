@@ -38,7 +38,7 @@ public class ChannelController {
      * @param id ID
      * @return
      */
-    @GetMapping(value="/{id}")
+    @GetMapping("/{id}")
     public Result findById(@PathVariable String id) {
 
         return new Result(true, StatusCode.OK, "查询成功", channelService.findById(id));
@@ -52,8 +52,8 @@ public class ChannelController {
      * @param size 页大小
      * @return 分页结果
      */
-    @PostMapping(value="/search/{page}/{size}")
-    public Result findSearch(@RequestBody Channel channel , @PathVariable int page, @PathVariable int size) {
+    @PostMapping("/search/{page}/{size}")
+    public Result findSearch(@RequestBody Channel channel, @PathVariable int page, @PathVariable int size) {
         IPage<Channel> channelIPage = channelService.findSearch(channel, page, size);
 
         return  new Result(true, StatusCode.OK, "查询成功", new PageResult<>(channelIPage.getTotal(), channelIPage.getRecords()));
@@ -64,7 +64,7 @@ public class ChannelController {
      * @param channel
      * @return
      */
-    @PostMapping(value="/search")
+    @PostMapping("/search")
     public Result findSearch( @RequestBody Channel channel) {
 
         return new Result(true, StatusCode.OK, "查询成功", channelService.findSearch(channel));
@@ -85,7 +85,7 @@ public class ChannelController {
      * 修改
      * @param channel
      */
-    @PutMapping(value="/{id}")
+    @PutMapping("/{id}")
     public Result modify(@RequestBody Channel channel, @PathVariable String id) {
         channel.setId(id);
         channelService.modify(channel);
@@ -97,11 +97,10 @@ public class ChannelController {
      * 删除
      * @param id
      */
-    @DeleteMapping(value="/{id}")
+    @DeleteMapping("/{id}")
     public Result remove(@PathVariable String id) {
         channelService.remove(id);
 
         return new Result(true, StatusCode.OK, "删除成功");
     }
-
 }

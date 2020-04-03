@@ -4,7 +4,7 @@ spring:
   application:  
     name: dc-gathering #指定服务名
   datasource:  
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.200.128:3306/dc_gathering?characterEncoding=utf-8
     username: root
     password: mysql
@@ -21,6 +21,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: assign_id #自3.3.0开始,默认使用雪花算法+UUID
+      table-underline: true
     banner: false
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

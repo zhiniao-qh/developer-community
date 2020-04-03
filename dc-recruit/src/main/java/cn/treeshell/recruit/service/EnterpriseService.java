@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface EnterpriseService extends IService<Enterprise> {
 
-    List<Enterprise> hotlist();
+    List<Enterprise> hotList();
 
     List<Enterprise> findAll();
 
