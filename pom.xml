@@ -11,6 +11,7 @@
         <module>dc-article</module>
         <module>dc-gathering</module>
         <module>dc-spit</module>
+        <module>dc-search</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

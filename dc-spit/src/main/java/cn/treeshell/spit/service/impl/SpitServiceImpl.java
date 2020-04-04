@@ -1,5 +1,6 @@
 package cn.treeshell.spit.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.spit.mapper.SpitMapper;
 import cn.treeshell.spit.model.Spit;
 import cn.treeshell.spit.service.SpitService;
@@ -70,7 +71,7 @@ public class SpitServiceImpl implements SpitService {
         spit.setState("1");
 
         // 如果当前添加的吐槽有父节点，那么父节点吐槽数 + 1
-        if (spit.getParentId() != null && !"".equals(spit.getParentId())) {
+        if (StrUtil.isNotBlank(spit.getParentId())  && StrUtil.isNotEmpty(spit.getParentId())) {
             Query query = new Query();
             query.addCriteria(Criteria.where("_id").is(spit.getParentId()));
             Update update = new Update();
