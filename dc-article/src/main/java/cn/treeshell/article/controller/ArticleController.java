@@ -1,5 +1,6 @@
 package cn.treeshell.article.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.article.model.Article;
 import cn.treeshell.article.service.ArticleService;
 import cn.treeshell.common.model.PageResult;
@@ -8,6 +9,8 @@ import cn.treeshell.common.model.StatusCode;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 文章 前端控制器
@@ -22,6 +25,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 更新文章状态
@@ -110,6 +116,12 @@ public class ArticleController {
      */
     @PostMapping
     public Result add(@RequestBody Article article) {
+        String token = (String) request.getAttribute("claims_user");
+        if (StrUtil.isEmpty(token)) {
+
+            return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        }
+
         articleService.add(article);
 
         return new Result(true, StatusCode.OK, "增加成功");

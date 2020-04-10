@@ -1,5 +1,6 @@
 package cn.treeshell.spit.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.common.model.PageResult;
 import cn.treeshell.common.model.Result;
 import cn.treeshell.common.model.StatusCode;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 吐槽 前端控制器
@@ -26,6 +29,9 @@ public class SpitController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 查询全部
@@ -55,6 +61,12 @@ public class SpitController {
      */
     @PostMapping
     public Result save(@RequestBody Spit spit) {
+        String token = (String) request.getAttribute("claims_user");
+        if (StrUtil.isEmpty(token)) {
+
+            return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        }
+
         spitService.add(spit);
 
         return new Result(true, StatusCode.OK, "保存成功");

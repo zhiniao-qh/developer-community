@@ -1,0 +1,15 @@
+server:
+  port: 9009
+spring:
+  application:
+    name: dc-mq
+  rabbitmq:
+    host: 192.168.200.128
+
+### 阿里云相关 ###
+aliyun:
+  sms:
+    accessKeyId: haha # 替换成你自己的
+    accessKeySecret: haha # 替换成你自己的
+    templateCode: SMS_187226215
+    signName: 浮白个人博客

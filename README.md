@@ -17,3 +17,4 @@
 | dc-recruit | 招聘模块 |
 | dc-spit | 吐槽模块 | 
 | dc-search | 搜索模块 |
+| dc-user | 用户模块 |

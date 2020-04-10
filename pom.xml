@@ -12,6 +12,8 @@
         <module>dc-gathering</module>
         <module>dc-spit</module>
         <module>dc-search</module>
+        <module>dc-user</module>
+        <module>dc-mq</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -34,6 +36,7 @@
         <flyway.version>5.2.4</flyway.version>
         <jetcache.version>2.5.12</jetcache.version>
         <hutool.version>5.2.5</hutool.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencies>

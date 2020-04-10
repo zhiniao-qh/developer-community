@@ -46,3 +46,8 @@ jetcache:
         maxTotal: 50
       host: 192.168.200.128
       port: 6379
+
+### jwt 相关配置 ###
+jwt:
+  config:
+    key: www.treeshell.cn

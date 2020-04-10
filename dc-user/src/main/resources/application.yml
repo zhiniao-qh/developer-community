@@ -1,0 +1,59 @@
+server:
+  port: 9008
+spring:
+  application:
+    name: dc-user #指定服务名
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.200.128:3306/dc_user?characterEncoding=utf-8
+    username: root
+    password: mysql
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      connection-timeout: 30000
+      max-lifetime: 1800000
+  redis:
+    host: 192.168.200.128
+    timeout: 3000
+  rabbitmq:
+    host: 192.168.200.128
+
+### MyBatis Plus 相关配置 ###
+mybatis-plus:
+  mapper-location:- classpath: mapper/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: assign_id #自3.3.0开始,默认使用雪花算法+UUID
+      table-underline: true
+    banner: false
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+### jetCache 相关配置 ###
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+  remote:
+    default:
+      type: redis
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50
+      host: 192.168.200.128
+      port: 6379
+
+### jwt 相关配置 ###
+jwt:
+  config:
+    key: www.treeshell.cn
+    ttl: 3600000

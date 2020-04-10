@@ -1,5 +1,6 @@
 package cn.treeshell.qa.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.common.model.PageResult;
 import cn.treeshell.common.model.Result;
 import cn.treeshell.common.model.StatusCode;
@@ -8,6 +9,8 @@ import cn.treeshell.qa.service.ProblemService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 问题 前端控制器
@@ -19,8 +22,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/problem")
 public class ProblemController {
+
     @Autowired
     private ProblemService problemService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 最新问题
@@ -117,6 +124,12 @@ public class ProblemController {
      */
     @PostMapping
     public Result add(@RequestBody Problem problem) {
+        String token = (String) request.getAttribute("claims_user");
+        if (StrUtil.isEmpty(token)) {
+
+            return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        }
+
         problemService.add(problem);
 
         return new Result(true, StatusCode.OK, "增加成功");

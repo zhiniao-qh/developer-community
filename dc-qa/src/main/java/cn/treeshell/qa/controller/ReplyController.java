@@ -1,5 +1,6 @@
 package cn.treeshell.qa.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.treeshell.common.model.PageResult;
 import cn.treeshell.common.model.Result;
 import cn.treeshell.common.model.StatusCode;
@@ -8,6 +9,8 @@ import cn.treeshell.qa.service.ReplyService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 回答 前端控制器
@@ -22,6 +25,9 @@ public class ReplyController {
 
     @Autowired
     private ReplyService replyService;
+
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 查询全部数据
@@ -76,6 +82,12 @@ public class ReplyController {
      */
     @PostMapping
     public Result add(@RequestBody Reply reply) {
+        String token = (String) request.getAttribute("claims_user");
+        if (StrUtil.isEmpty(token)) {
+
+            return new Result(false, StatusCode.ACCESSERROR, "权限不足");
+        }
+
         replyService.add(reply);
 
         return new Result(true, StatusCode.OK, "增加成功");

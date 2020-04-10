@@ -1,9 +1,11 @@
 package cn.treeshell.spit;
 
+import cn.treeshell.common.util.JwtUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 /*
@@ -24,6 +26,14 @@ public class SpitApplication {
      */
     @Bean
     public IdWorker idWorker() {
+
         return new IdWorker();
+    }
+
+    @Bean
+    @ConfigurationProperties("jwt.config")
+    public JwtUtil jwtUtil() {
+
+        return new JwtUtil();
     }
 }
